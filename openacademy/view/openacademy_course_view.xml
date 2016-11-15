@@ -10,10 +10,19 @@
                     <sheet>
                         <group>
                             <field name="name"/>
+                            <field name="responsible_id"/>
                         </group>
                         <notebook>
                             <page string="Description">
                                 <field name="description"/>
+                            </page>
+                            <page string="Sessions">
+                                <field name="session_ids">
+                                    <tree string="Registered sessions" editable="botton">
+                                        <field name="name"/>
+                                        <field name="instructor_id"/>
+                                    </tree>
+                                </field>
                             </page>
                             <page string="About">
                                 This is an example of notebooks
@@ -30,7 +39,7 @@
             <field name="arch" type="xml">
                 <tree string="Course">
                     <field name="name"/>
-                    <field name="description"/>
+                    <field name="responsible_id"/>
 		</tree>
             </field>
         </record>
