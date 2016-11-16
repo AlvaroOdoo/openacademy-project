@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from openerp import fields, models
+from openerp import fields, models, api
 
 class Session (models.Model):
     _name = 'openacademy.session'
@@ -17,5 +17,24 @@ class Session (models.Model):
                                  string="Course", 
                                  required=True)
     attendee_ids = fields.Many2many('res.partner', string="Attendees")
-                                      
+    taken_seats = fields.Float(string="Taken seats", compute='_taken_seats')
 
+#   Código del Curso
+    @api.one
+    @api.depends('seats', 'attendee_ids')
+    def _taken_seats(self):
+        if not self.seats:
+            self.taken_seats = 0.0
+        else:
+            self.taken_seats = 100.0 * len(self.attendee_ids) / self.seats
+
+#   Código de la Web
+"""
+    @api.depends('seats', 'attendee_ids')
+    def _taken_seats(self):
+        for r in self:
+            if not r.seats:
+                r.taken_seats = 0.0
+            else:
+                r.taken_seats = 100.0 * len(r.attendee_ids) / r.seats
+"""
