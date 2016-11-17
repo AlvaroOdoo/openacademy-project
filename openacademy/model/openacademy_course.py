@@ -20,3 +20,19 @@ class Course(models.Model):
          'UNIQUE(name)',
          "The course title must be unique"),
     ]
+
+    @api.one # api.one Manda los parametros por defaul: cr, uid, id, context
+#   def copy(self, cr, uid, id, default=None, context=None):
+    def copy(self, default=None):
+
+        copied_count = self.search_count(
+            [('name', '=like', u"Copy of {}%".format(self.name))])
+
+        if not copied_count:
+            new_name = u"Copy of {}".format(self.name)
+        else:
+            new_name = u"Copy of {} ({})".format(self.name, copied_count)
+
+        default['name'] = new_name
+        return super(Course, self).copy(default)
+
